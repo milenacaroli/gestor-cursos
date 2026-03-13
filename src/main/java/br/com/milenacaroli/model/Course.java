@@ -1,0 +1,48 @@
+package br.com.milenacaroli.model;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+@Entity
+@Table(name = "courses")
+public class Course extends PanacheEntity {
+
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
+    private final List<Lesson> lessons = new ArrayList<>();
+    private String name;
+
+    // required for JPA
+    protected Course() {
+    }
+
+    public Course(String name) {
+        this.name = name;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void addLesson(Lesson lesson) {
+        Lesson validatedLesson = Objects.requireNonNull(lesson, "lesson must no be null");
+        this.lessons.add(validatedLesson);
+    }
+
+    public void changeName(String name) {
+        this.name = Objects.requireNonNull(name, "name must not be null");
+    }
+
+    public List<Lesson> getLessons() {
+        // defensive
+        return Collections.unmodifiableList(this.lessons);
+    }
+}

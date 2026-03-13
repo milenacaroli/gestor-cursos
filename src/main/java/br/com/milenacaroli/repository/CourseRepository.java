@@ -1,9 +1,10 @@
 package br.com.milenacaroli.repository;
 
-import br.com.milenacaroli.entity.Course;
+import br.com.milenacaroli.model.Course;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
+
 import java.util.List;
 
 @ApplicationScoped

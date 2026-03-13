@@ -1,10 +1,14 @@
 package br.com.milenacaroli.service;
 
-import br.com.milenacaroli.dto.CourseDTO;
-import br.com.milenacaroli.dto.LessonDTO;
-import br.com.milenacaroli.entity.Course;
-import br.com.milenacaroli.entity.Lesson;
+import br.com.milenacaroli.dto.CourseRequest;
+import br.com.milenacaroli.dto.CourseResponse;
+import br.com.milenacaroli.dto.LessonRequest;
+import br.com.milenacaroli.dto.LessonResponse;
 import br.com.milenacaroli.exception.CourseNotFoundException;
+import br.com.milenacaroli.mappers.CourseMapper;
+import br.com.milenacaroli.mappers.LessonMapper;
+import br.com.milenacaroli.model.Course;
+import br.com.milenacaroli.model.Lesson;
 import br.com.milenacaroli.repository.CourseRepository;
 import br.com.milenacaroli.repository.LessonRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -25,32 +29,32 @@ public class CourseService {
     // Operações com Course
 
     @Transactional
-    public CourseDTO create(CourseDTO courseDTO) {//criando curso
-        Course course = CourseDTO.toEntity(courseDTO);
+    public CourseResponse create(CourseRequest courseRequest) {//criando curso
+        Course course = CourseMapper.toDomain(courseRequest);
         course.persist();//gravando curso
-        return CourseDTO.fromEntity(course);
+        return CourseMapper.toResponse(course);
     }
 
-    public List<CourseDTO> listAll() {
+    public List<CourseResponse> listAll() {
         return courseRepository.listAll() //busca no DB
                 .stream()//trata dados
-                .map(CourseDTO::fromEntity)//converte course (entidade) em DTO
+                .map(CourseMapper::toResponse)//converte course (entidade) em DTO
                 .toList(); //devolve a lista
     }
 
-    public CourseDTO findById(Long id) {//dado um ID, devolve um curso com esse ID
+    public CourseResponse findById(Long id) {//dado um ID, devolve um curso com esse ID
         return courseRepository.findByIdOptional(id) //busca pelo ID (pode não existir)
-                .map(CourseDTO::fromEntity) //se encontrar, mapeia o retorno para DTO
+                .map(CourseMapper::toResponse) //se encontrar, mapeia o retorno para DTO
                 .orElseThrow(() -> new CourseNotFoundException(id)); // se não existir, lança exceção
     }
 
     @Transactional //DB
-    public CourseDTO update(Long id, CourseDTO courseDTO) {
+    public CourseResponse update(Long id, CourseRequest courseRequest) {
         return courseRepository.findByIdOptional(id) //busca curso (pode nao existir (optional))
                 .map(course -> { //se encontrar, atualizar o nome com o nome do DTO
                     //encontrou curso
-                    course.setName(courseDTO.name()); //pegando nome do DTO e atualizando o nome no DB
-                    return CourseDTO.fromEntity(course);//retorno do curso atualizado
+                    course.changeName(courseRequest.name()); //pegando nome do DTO e atualizando o nome no DB
+                    return CourseMapper.toResponse(course);//retorno do curso atualizado
                 })
                 .orElseThrow(() -> new CourseNotFoundException(id)); //lança excecao e sai do metodo
     }
@@ -65,24 +69,22 @@ public class CourseService {
     // operaçoes com Lesson
 
     @Transactional
-    public LessonDTO addLesson(Long courseId, LessonDTO lessonDTO) {//adicionando Lição
+    public LessonResponse addLesson(Long courseId, LessonRequest lessonRequest) {//adicionando Lição
         return courseRepository.findByIdOptional(courseId)//procura curso
                 .map(course -> {
-                    Lesson lesson = new Lesson();
-                    lesson.setName(lessonDTO.name());
-                    lesson.setCourse(course);
+                    Lesson lesson = new Lesson(lessonRequest.name(), course);
                     lessonRepository.persist(lesson); //grava lição
-                    return LessonDTO.fromEntity(lesson);
+                    return LessonMapper.toResponse(lesson);//devolve licao criada
                 })
                 .orElseThrow(() -> new CourseNotFoundException(courseId)); //se não encontrar lança exceção
     }
 
-    public List<LessonDTO> listLessons(Long courseId) { //lista lições de um curso
+    public List<LessonResponse> listLessons(Long courseId) { //lista lições de um curso
         courseRepository.findByIdOptional(courseId) //busca curso
                 .orElseThrow(() -> new CourseNotFoundException(courseId)); //se  não encontrar, lança exceção
         return lessonRepository.findByCourseId(courseId)//achou curso, consulta lessons daquele curso
                 .stream()
-                .map(LessonDTO::fromEntity)//mapeia lições das entidades para DTO e devolve
+                .map(LessonMapper::toResponse)//mapeia lições das entidades para DTO e devolve
                 .toList();
     }
 }
