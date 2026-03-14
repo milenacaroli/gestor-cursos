@@ -55,8 +55,9 @@ public class CourseResource {
     }
 
     @GET
-    public Response getCourses() {
-        List<CourseResponse> courses = courseService.listAll();
+    public Response getCourses(@QueryParam("page") @DefaultValue("1") int page,
+                               @QueryParam("size") @DefaultValue("1") int size) {
+        List<CourseResponse> courses = courseService.listAll(page, size);
 
         return Response.ok(courses).build();
     }

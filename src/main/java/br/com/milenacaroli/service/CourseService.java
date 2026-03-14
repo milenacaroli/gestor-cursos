@@ -35,8 +35,8 @@ public class CourseService {
         return CourseMapper.toResponse(course);
     }
 
-    public List<CourseResponse> listAll() {
-        return courseRepository.listAll() //busca no DB
+    public List<CourseResponse> listAll(int page, int size) {
+        return courseRepository.findAllPaged(page, size) //busca no DB
                 .stream()//trata dados
                 .map(CourseMapper::toResponse)//converte course (entidade) em DTO
                 .toList(); //devolve a lista
