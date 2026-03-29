@@ -1,0 +1,27 @@
+2026-03-28 12:34:28.654991-03:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HTE_LESSONS" already exists; SQL statement:
+create global temporary table HTE_lessons(rn_ integer not null, course_id bigint, id bigint, name varchar(255), primary key (rn_)) transactional [42101-240]
+2026-03-28 12:34:28.658502-03:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HTE_COURSES" already exists; SQL statement:
+create global temporary table HTE_courses(rn_ integer not null, id bigint, name varchar(255), primary key (rn_)) transactional [42101-240]
+2026-03-28 12:34:28.661342-03:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HTE_USERS" already exists; SQL statement:
+create global temporary table HTE_users(rn_ integer not null, id bigint, email varchar(255), name varchar(255), password varchar(255), role varchar(255), primary key (rn_)) transactional [42101-240]
+2026-03-29 11:26:59.512268-03:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HTE_LESSONS" already exists; SQL statement:
+create global temporary table HTE_lessons(rn_ integer not null, course_id bigint, id bigint, name varchar(255), primary key (rn_)) transactional [42101-240]
+2026-03-29 11:26:59.516944-03:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HTE_COURSES" already exists; SQL statement:
+create global temporary table HTE_courses(rn_ integer not null, id bigint, name varchar(255), primary key (rn_)) transactional [42101-240]
+2026-03-29 11:26:59.517846-03:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HTE_USERS" already exists; SQL statement:
+create global temporary table HTE_users(rn_ integer not null, id bigint, email varchar(255), name varchar(255), password varchar(255), role varchar(255), primary key (rn_)) transactional [42101-240]
+2026-03-29 11:40:57.420606-03:00 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HTE_LESSONS" already exists; SQL statement:
+create global temporary table HTE_lessons(rn_ integer not null, course_id bigint, id bigint, name varchar(255), primary key (rn_)) transactional [42101-240]
+2026-03-29 11:40:57.423114-03:00 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HTE_COURSES" already exists; SQL statement:
+create global temporary table HTE_courses(rn_ integer not null, id bigint, name varchar(255), primary key (rn_)) transactional [42101-240]
+2026-03-29 11:40:57.427691-03:00 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HTE_USERS" already exists; SQL statement:
+create global temporary table HTE_users(rn_ integer not null, id bigint, email varchar(255), name varchar(255), password varchar(255), role varchar(255), primary key (rn_)) transactional [42101-240]

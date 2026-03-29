@@ -1,10 +1,11 @@
 package br.com.milenacaroli.resource;
 
-import br.com.milenacaroli.dto.SignUpRequest;
-import br.com.milenacaroli.dto.SingInResponse;
-import br.com.milenacaroli.service.AuthService;
+import br.com.milenacaroli.dto.UserRequest;
+import br.com.milenacaroli.dto.UserResponse;
+import br.com.milenacaroli.service.UserService;
 import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -13,23 +14,28 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/auth")
+import java.net.URI;
+
+@Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class AuthResource {
+public class UserResource {
 
     @Inject
-    private AuthService authService;
+    private UserService userService;
 
     @POST
-    @Path("/token")
     @PermitAll
-    public Response login(@Valid SignUpRequest signUpRequest) {
-        SingInResponse response = authService.login(signUpRequest);
+    @Transactional
+    public Response createUser(@Valid UserRequest request) {
 
-        return Response.ok()
+        UserResponse response = userService.create(request);
+        URI location = URI.create("/users/" + response.id());
+
+        return Response.created(location)
                 .header("Content-Type", "application/json")
                 .entity(response)
                 .build();
+
     }
 }
