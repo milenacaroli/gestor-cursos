@@ -32,6 +32,13 @@ public class GlobalExceptionMapper implements ExceptionMapper<Exception> {
                     .build();
         }
 
+        if (exception instanceof UserAlreadyRegistered ex) {
+            return Response.status(Response.Status.CONFLICT)
+                    .type(MediaType.APPLICATION_JSON)
+                    .entity(errorBody(409, ex.getMessage()))
+                    .build();
+        }
+
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .type(MediaType.APPLICATION_JSON)
                 .entity(errorBody(500, "Erro interno do servidor"))
