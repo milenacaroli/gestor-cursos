@@ -4,13 +4,11 @@ import br.com.milenacaroli.dto.UserRequest;
 import br.com.milenacaroli.dto.UserResponse;
 import br.com.milenacaroli.service.UserService;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -37,5 +35,22 @@ public class UserResource {
                 .entity(response)
                 .build();
 
+    }
+
+    @GET
+    @RolesAllowed("ADMIN")
+    public Response listAll() {
+        return Response.ok()
+                .header("Content-Type", "application/json")
+                .entity(userService.findAll())
+                .build();
+    }
+
+    @DELETE
+    @RolesAllowed("ADMIN")
+    @Transactional
+    public Response deleteUser(@Valid UserRequest request) {
+        userService.delete(request);
+        return Response.noContent().build();
     }
 }

@@ -26,10 +26,10 @@ public class AuthService {
                 .orElseThrow(() -> new NotAuthorizedException("Usuário não encontrado!"));
 
         logger.info("Usuário encontrado: " + user.getEmail());
-        logger.info("Senha fornecida: " + signUpRequest.password());
+        logger.info("Senha fornecida: " + BcryptUtil.bcryptHash(signUpRequest.password()));
         logger.info("Senha armazenada: " + user.getPassword());
 
-        if (!signUpRequest.password().equals(user.getPassword())) {
+        if (!BcryptUtil.matches(signUpRequest.password(), user.getPassword())) {
             logger.info("Falha na autenticação, senha inválida para o usuário: " + user.getEmail());
             throw new NotAuthorizedException("Usuário ou senha inválidos!");
         }
